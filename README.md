@@ -5,10 +5,10 @@
 
 ### 如何使用
 - 自行安装WSL2
-- 安装输入法
+- 创建字体库软链接并应用字体
   ```shell
-  apt update
-  apt install -y fcitx fcitx-sunpinyin
+  ln -s /mnt/c/Windows/Fonts /usr/share/fonts/windows
+  fc-cache
   ```
 - 克隆本项目到本地
   ```shell
@@ -17,13 +17,19 @@
   git clone https://github.com/chenyingzhou/Wsl2-GUI.git
   ```
   > 设置core.autocrlf为false的目的是为了避免换行符自动转换，Windows的脚本换行符必须是CRLF，Linux则必须是LF，否则功能会不正常。
+- 安装输入法
+  ```shell
+  apt update
+  apt install -y fcitx fcitx-sunpinyin
+  ```
 - 配置输入法
   - 在Windows中打开上一步克隆的路径双击Applications，我是直接克隆到C盘根目录，所以路径是`C:\Wsl2-GUI\Applications`
   - 找到该目录的`FcitxConfigGtk3`，这是一个快捷方式
-  - 如果克隆路径不是C盘根目录，则`右键FcitxConfigGtk3->属性->根据实际情况修改"目标(T)"和起始位置(S)`
+  - 如果克隆路径不是C盘根目录，则`右键FcitxConfigGtk3->属性->根据实际情况修改"目标(T)"和"起始位置(S)"`
   - 双击FcitxConfigGtk3，进入子系统的输入法配置页
   - 在`Input Method`标签页添加`Sunpinyin`
   - 点击`Global Config`标签页，前2行全部改为`LShift`作为中英切换键，和Windows相同，但没有影响，因为两边输入法不互通
+  - 点击`Appearence`标签页，将`Font`和`Menu Font`改为`Microsoft YaHei Regular`，以免输入法部分汉字显示异常
   - 点击`AddOn`标签页，点击列表`Simplified Chenese To ...(简繁切换)`，点击下面`Confidure`，关闭切换快捷键(因为和IDE全家桶冲突)，关闭方式是点击后按ESC键
   - 大功告成
 
