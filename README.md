@@ -43,10 +43,11 @@
   - 在子系统中执行的脚本
   - 换行符必须是LF，所以推荐用子系统的vim命令打开
   - 主要用于启动输入法后(若未启动)再执行指定命令
+  - 会将Windows和WSL2的ip写入到各自的hosts文件
   - 脚本中顺便启动的其他服务(示例中是ssh和docker)可根据需要添加或移除
 - Nginx/conf/nginx.conf
   - 端口转发是为了通过局域网访问子系统的端口
   - 用于端口转发的Nginx配置
   - 换行符(可能)必须是CRLF，所以推荐用Windows的记事本打开
   - 要转发的端口配置在该文件的stream模块
-  - 可以转发到127.0.0.1，因为Windows和子系统的localhostForwarding是默认开启的
+  - 可以转发到127.0.0.1(部分服务不行，所以改为转发到wslhost比较稳妥)，因为Windows和子系统的localhostForwarding是默认开启的
