@@ -10,27 +10,20 @@ echo "${winhost} winhost" >> /hosts_temp
 echo "${wslhost} wslhost" >> /hosts_temp
 mv /hosts_temp /etc/hosts
 # 下一条有可能会失败，需要自行解决C:\Windows\System32\drivers\etc\hosts的权限问题
-cp /etc/hosts /mnt/c/Windows/System32/drivers/etc/hosts >/dev/null 2>&1
+#cp /etc/hosts /mnt/c/Windows/System32/drivers/etc/hosts >/dev/null 2>&1
 
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 export GTK_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 export QT_IM_MODULE=fcitx
-
+export GDK_SCALE=1
+export GDK_DPI_SCALE=1.25
 # 启动输入法
-fcitx_status=`ps -ef|grep 'fcitx'|grep -v grep|wc -l`
-if [ $fcitx_status -le 0 ]; then
-  fcitx >/dev/null 2>&1
-fi
+nohup fcitx-autostart >/dev/null 2>&1 &
 
-# 启动其他各种服务，可适当添加或移除
-ssh_status=`ps -ef|grep 'sshd'|grep -v grep|wc -l`
-if [ $fcitx_status -le 0 ]; then
-  service ssh start >/dev/null 2>&1
-fi
-docker_status=`ps -ef|grep 'dockerd'|grep -v grep|wc -l`
-if [ $fcitx_status -le 0 ]; then
-  service docker start >/dev/null 2>&1
+# 启动Windows的端口转发
+proxy_status=`ps -ef|grep 'wsl2-tcpproxy.exe'|grep -v grep|wc -l`
+if [ $proxy_status -le 0 ]; then
+  nohup /mnt/c/Wsl2-GUI/wsl2-tcpproxy.exe >/wsl2-tcpproxy.log 2>&1 &
 fi
 
 # 根据输入参数执行命令
